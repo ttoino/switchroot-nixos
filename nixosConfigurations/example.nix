@@ -58,9 +58,6 @@ inputs.nixpkgs.lib.nixosSystem {
           "flakes"
         ];
 
-        # Use systemd stage-1 to avoid extra-utils glibc mixing issues.
-        boot.initrd.systemd.enable = lib.mkForce true;
-
         fileSystems = {
           "/" = {
             device = "/dev/disk/by-label/SWR-NIXOS";

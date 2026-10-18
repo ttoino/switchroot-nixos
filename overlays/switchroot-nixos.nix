@@ -51,6 +51,11 @@ prev.lib.packagesFromDirectoryRecursive {
   # });
   pipewire-with-tegra = prev.pipewire.override { inherit alsa-lib; };
 
+  # Pinned systemd brings an older glibc that collides with main nixpkgs
+  # when building extra-utils natively on aarch64. Skip the pin for native
+  # builds; keep it for cross-compilation.
+}
+// prev.lib.optionalAttrs (prev.stdenv.hostPlatform != prev.stdenv.buildPlatform) {
   systemd = systemdOverride {
     pkgFn = x: x.systemd;
     passthru = passthruTrue;
