@@ -58,12 +58,8 @@ inputs.nixpkgs.lib.nixosSystem {
           "flakes"
         ];
 
-        # extra-utils mixes glibc versions from pinned systemd and main nixpkgs;
-        # force the right libc symlinks so busybox/ash can run.
-        boot.initrd.extraUtilsCommands = ''
-          ln -sf ${pkgs.glibc}/lib/libc.so.6 $out/lib/libc.so.6
-          ln -sf ${pkgs.glibc}/lib/ld-linux-aarch64.so.1 $out/lib/ld-linux-aarch64.so.1
-        '';
+        # Use systemd stage-1 to avoid extra-utils glibc mixing issues.
+        boot.initrd.systemd.enable = lib.mkForce true;
 
         fileSystems = {
           "/" = {
