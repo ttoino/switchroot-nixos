@@ -28,7 +28,7 @@ let
     ];
 
     buildInputs = [
-      libgcc.lib
+      (libgcc.lib or libgcc.out)
       libglvnd
       glib
       alsa-lib

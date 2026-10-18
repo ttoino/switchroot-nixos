@@ -20,7 +20,7 @@
         installApplication = pkgs.writeShellApplication {
           name = "install-boot-config";
           runtimeInputs = with pkgs; [
-            uutils-coreutils-noprefix
+            coreutils
             switchroot-boot.boot-scr.buildScript
           ];
           text = ''
