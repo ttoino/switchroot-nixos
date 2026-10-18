@@ -30,10 +30,7 @@ inputs.nixpkgs.lib.nixosSystem {
           nix-top
           nix-weather
           nvidiaPackages-l4t.tools
-          onboard
-          mesa-demos
           gdb
-          gpu-viewer
           lshw
           alsa-utils
           ffmpeg-full
@@ -60,21 +57,6 @@ inputs.nixpkgs.lib.nixosSystem {
           "nix-command"
           "flakes"
         ];
-
-        services = {
-          xserver = {
-            enable = true;
-            displayManager.lightdm = {
-              enable = true;
-              greeters = {
-                gtk.enable = false;
-                slick.enable = true; # supports onboard
-              };
-            };
-            desktopManager.cinnamon.enable = true;
-          };
-          displayManager.defaultSession = "cinnamon";
-        };
 
         fileSystems = {
           "/" = {
