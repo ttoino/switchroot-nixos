@@ -15,4 +15,19 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Build switchroot image
-        run: nix build .#nixosConfigurations.example.config.system.build.switchrootImage
+        run: nix build .#nixosConfigurations.example.config.system.build.switchrootImage --print-build-logs
+
+      - name: Collect build logs on failure
+        if: failure()
+        run: |
+          mkdir -p nix-logs
+          find /nix/var/log/nix/drvs -type f -name '*.drv' -newer /proc/1/stat -print0 2>/dev/null | \
+            xargs -0 -I{} sh -c 'nix log "{}" > "nix-logs/$(basename {}).log" 2>&1 || true'
+
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-build-logs
+          path: nix-logs/
+          retention-days: 3
